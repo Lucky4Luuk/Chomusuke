@@ -42,7 +42,8 @@ impl EventHandler for Handler {
 
 fn main() {
     let mut builder = pretty_env_logger::formatted_builder();
-    builder.filter(Some("Chomusuke"), LevelFilter::Info);
+    //builder.filter(Some("Chomusuke"), LevelFilter::Info);
+    builder.filter(None, LevelFilter::max());
     builder.init();
 
     info!("Attempting login...");
