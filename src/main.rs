@@ -66,21 +66,6 @@ fn main() {
         Err(why) => panic!("Error creating client!"),
     };
 
-    // {
-    //     let mut data = client.data.write();
-    //     data.insert::<ShardManagerContainer>(Arc::clone(&client.shard_manager));
-    // }
-    //
-    // let owners = match client.cache_and_http.http.get_current_application_info() {
-    //     Ok(info) => {
-    //         let mut set = HashSet::new();
-    //         set.insert(info.owner.id);
-    //
-    //         set
-    //     },
-    //     Err(why) => panic!("Couldn't get application info: {:?}", why),
-    // };
-
     client.with_framework(StandardFramework::new()
         .configure(|c| c.prefix("cs")) //.owners(owners)
         .group(&GENERAL_GROUP));
