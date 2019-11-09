@@ -1,3 +1,5 @@
-# -FukimageTokoyami-
+# -Chomusuke-
 ### Functionality
-Epic shit bro 😎
+ - Administration code
+ - Fun commands
+ - Economy & Scoreboard
