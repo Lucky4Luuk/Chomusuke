@@ -58,6 +58,7 @@ fn main() {
     client.with_framework(StandardFramework::new()
         .configure(|c| c.prefix("cs!")) //.owners(owners)
         .group(&GENERAL_GROUP)
+        //.group(&MEMES_GROUP)
     );
 
     if let Err(why) = client.start_autosharded() {
