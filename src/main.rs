@@ -9,16 +9,11 @@ use serenity::{
 };
 use serenity::framework::standard::{
     StandardFramework,
-    CommandResult,
-    macros::{
-        command,
-        group,
-    },
 };
 
 pub mod commands;
 use commands::{
-    general,
+    general::GENERAL_GROUP,
 };
 
 struct Handler;
@@ -49,6 +44,9 @@ fn main() {
     info!("Fukimage Tokoyami is starting!");
 
     let mut client = Client::new(&token, Handler).expect("Error creating the client!");
+    client.with_framework(StandardFramework::new()
+        .configure(|c| c.prefix("cs"))
+        .group(&GENERAL_GROUP));
 
     //Here we clone a lock to the Shard Manager, and then move it into a new thread.
     //The thread will unlock the manager and print shards' status on a loop.
