@@ -1,1 +1,4 @@
-### Bot
+# -FukimageTokoyami-
+---
+### Functionality
+Epic shit bro 😎
