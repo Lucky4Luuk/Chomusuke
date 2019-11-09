@@ -1,5 +1,9 @@
 # -Chomusuke-
 ### Functionality
- - Administration code
- - Fun commands
- - Economy & Scoreboard
+- Administration code
+- Fun commands
+- Economy & Scoreboard
+
+### TODO
+- [ ] Make it work lol
+- [x] Epic
