@@ -5,6 +5,15 @@ use std::{env, thread, time::Duration};
 use serenity::{
     model::gateway::Ready,
     prelude::*,
+    client::Client,
+};
+use serenity::framework::standard::{
+    StandardFramework,
+    CommandResult,
+    macros::{
+        command,
+        group,
+    },
 };
 
 pub mod commands;
@@ -29,18 +38,6 @@ impl EventHandler for Handler {
 }
 
 fn main() {
-    // env_logger::init().unwrap();
-    // env_logger::init_with_level(Level::Info).unwrap();
-    // let mut builder = env_logger::Builder::from_default_env();
-    // builder.target(env_logger::Target::Stdout);
-    // builder.filter(None, LevelFilter::Info);
-    // builder.format(|buf, record| {
-    //     println!("{}: {}", record.level(), record.args());
-    //     Ok(())
-    // });
-    // builder.init();
-
-    // pretty_env_logger::init();
     let mut builder = pretty_env_logger::formatted_builder();
     builder.filter(Some("FukimageTokoyami"), LevelFilter::Info);
     builder.init();
