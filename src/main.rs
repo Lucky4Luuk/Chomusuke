@@ -23,19 +23,8 @@ use serenity::{
 pub mod commands;
 use commands::{
     general::*,
+    memes::*,
 };
-
-group!({
-    name: "general",
-    options: {},
-    commands: [ping],
-});
-
-// struct ShardManagerContainer;
-
-// impl TypeMapKey for ShardManagerContainer {
-//     type Value = Arc<Mutex<ShardManager>>;
-// }
 
 struct Handler;
 
@@ -67,10 +56,11 @@ fn main() {
     };
 
     client.with_framework(StandardFramework::new()
-        .configure(|c| c.prefix("cs")) //.owners(owners)
-        .group(&GENERAL_GROUP));
+        .configure(|c| c.prefix("cs!")) //.owners(owners)
+        .group(&GENERAL_GROUP)
+    );
 
-    if let Err(why) = client.start() {
+    if let Err(why) = client.start_autosharded() {
         error!("Client error: {:?}", why);
         panic!("Zoinks");
     }
