@@ -1,1 +1,5 @@
-### Bot
+# -Chomusuke-
+### Functionality
+ - Administration code
+ - Fun commands
+ - Economy & Scoreboard
