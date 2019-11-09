@@ -61,7 +61,7 @@ fn main() {
 
     info!("Chomusuke is starting!");
 
-    let mut client = match Client::new(&token, Handler) {
+    let mut client = match Client::new(token, Handler) {
         Ok(info) => info,
         Err(why) => panic!("Error creating client!"),
     };
@@ -85,7 +85,8 @@ fn main() {
         .configure(|c| c.prefix("cs")) //.owners(owners)
         .group(&GENERAL_GROUP));
 
-    if let Err(why) = client.start_autosharded() {
+    if let Err(why) = client.start() {
         error!("Client error: {:?}", why);
+        panic!("Zoinks");
     }
 }
