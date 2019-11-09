@@ -1,0 +1,13 @@
+[package]
+name = "FukimageTokoyami"
+version = "0.1.0"
+authors = ["Luuk van Oijen <lazyluuk.channel@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serenity = "0.7.2"
+env_logger = "0.7.1"
+pretty_env_logger = "0.3.1"
+log = "0.4.0"
