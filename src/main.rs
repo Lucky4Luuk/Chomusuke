@@ -16,6 +16,7 @@ use serenity::{
     },
     framework::standard::{
         StandardFramework,
+        Configuration,
         macros::group,
     },
 };
@@ -23,8 +24,13 @@ use serenity::{
 pub mod commands;
 use commands::{
     general::*,
-    memes::*,
 };
+
+// struct ShardManagerContainer;
+
+// impl TypeMapKey for ShardManagerContainer {
+//     type Value = Arc<Mutex<ShardManager>>;
+// }
 
 struct Handler;
 
@@ -40,7 +46,6 @@ impl EventHandler for Handler {
 
 fn main() {
     let mut builder = pretty_env_logger::formatted_builder();
-    //builder.filter(Some("Chomusuke"), LevelFilter::Info);
     builder.filter(Some("Chomusuke"), LevelFilter::max());
     builder.init();
 
@@ -50,19 +55,36 @@ fn main() {
 
     info!("Chomusuke is starting!");
 
-    let mut client = match Client::new(token, Handler) {
+    let mut client = match Client::new(&token, Handler) {
         Ok(info) => info,
         Err(why) => panic!("Error creating client!"),
     };
 
+    // {
+    //     let mut data = client.data.write();
+    //     data.insert::<ShardManagerContainer>(Arc::clone(&client.shard_manager));
+    // }
+    //
+    // let owners = match client.cache_and_http.http.get_current_application_info() {
+    //     Ok(info) => {
+    //         let mut set = HashSet::new();
+    //         set.insert(info.owner.id);
+    //
+    //         set
+    //     },
+    //     Err(why) => panic!("Couldn't get application info: {:?}", why),
+    // };
+
     client.with_framework(StandardFramework::new()
-        .configure(|c| c.prefix("cs!")) //.owners(owners)
-        .group(&GENERAL_GROUP)
-        //.group(&MEMES_GROUP)
-    );
+        .configure(|c| c.prefix("cs!")
+                        .ignore_bots(true)
+                        .delimiters(vec![",", ", ", " "])
+                        //.allow_whitespace(true)
+                        //.on_mention(true)
+                        .case_insensitivity(true))
+        .group(&GENERAL_GROUP));
 
     if let Err(why) = client.start_autosharded() {
         error!("Client error: {:?}", why);
-        panic!("Zoinks");
     }
 }

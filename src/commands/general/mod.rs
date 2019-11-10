@@ -7,8 +7,11 @@ use serenity::framework::standard::{
 pub mod ping;
 use ping::*;
 
+pub mod avatar;
+use avatar::*;
+
 group!({
     name: "general",
     options: {},
-    commands: [ping],
+    commands: [ping, avatar],
 });
