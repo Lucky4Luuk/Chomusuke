@@ -23,7 +23,8 @@ use serenity::{
 
 pub mod commands;
 use commands::{
-    general::*,
+    general::GENERAL_GROUP,
+    meta::help::MY_HELP,
 };
 
 struct Handler;
@@ -61,6 +62,7 @@ fn main() {
                         //.allow_whitespace(true)
                         //.on_mention(true)
                         .case_insensitivity(true))
+        .help(&MY_HELP)
         .group(&GENERAL_GROUP));
 
     if let Err(why) = client.start_autosharded() {
