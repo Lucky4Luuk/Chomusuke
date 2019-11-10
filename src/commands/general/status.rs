@@ -11,5 +11,5 @@ use serenity::framework::standard::{
 
 #[command]
 pub fn status(ctx: &mut Context, msg: &Message) -> CommandResult {
-    
+    Ok(())
 }

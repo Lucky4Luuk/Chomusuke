@@ -9,9 +9,11 @@ use serenity::framework::standard::{
     },
 };
 
-//TODO: Dennis please implement this
+//Use egg-mode + tokio to scrape twitter
+//TODO: Implement this as a subgroup, with commands for setting up the channel it will post
+//to and connect it to the right twitter account
 #[command]
-pub fn uwuize(ctx: &mut Context, msg: &Message) -> CommandResult {
+pub fn twitter(ctx: &mut Context, msg: &Message) -> CommandResult {
     msg.channel_id.say(ctx, "Pong!");
     Ok(())
 }

@@ -10,8 +10,11 @@ use ping::*;
 pub mod avatar;
 use avatar::*;
 
+pub mod status;
+use status::*;
+
 group!({
     name: "general",
     options: {},
-    commands: [ping, avatar],
+    commands: [ping, avatar, status],
 });
