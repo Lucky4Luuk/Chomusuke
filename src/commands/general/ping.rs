@@ -11,6 +11,6 @@ use serenity::framework::standard::{
 
 #[command]
 pub fn ping(ctx: &mut Context, msg: &Message) -> CommandResult {
-    msg.channel_id.say(ctx, "Pong!");
+    msg.channel_id.say(ctx, "Pong!")?;
     Ok(())
 }

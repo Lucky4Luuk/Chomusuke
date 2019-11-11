@@ -15,7 +15,7 @@ use serenity::framework::standard::{
 pub fn avatar(ctx: &mut Context, msg: &Message) -> CommandResult {
     let mut target = &msg.author;
 
-    // TODO: Put this in a seperate function in an util module
+    // TODO: Put this in a separate function in an util module
     let regex = Regex::new(r"\s+").unwrap(); //No error handling needed here, as a panic here would mean our code is completely fucking broken
     let formatted = regex.replace_all(msg.content["cs!".len()..].trim(), " ");
     let arguments = formatted.split(' ');
