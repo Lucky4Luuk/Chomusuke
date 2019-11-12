@@ -13,5 +13,5 @@ use nekos::*;
 group!({
     name: "memes",
     options: {},
-    commands: [uwuize, slap],
+    commands: [uwuize, pat, hug, slap, tickle, kiss, poke],
 });
