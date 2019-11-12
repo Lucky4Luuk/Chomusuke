@@ -51,7 +51,7 @@ pub fn avatar(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult
 
             let member = target.unwrap();
             let user = member.user.read();
-            name = format!("{}#{}", user.name, user.discriminator);
+            name = user.tag();
 
             match user.avatar_url() {
                 Some(url) => profile_picture = url,
@@ -63,7 +63,7 @@ pub fn avatar(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult
         },
         Err(e) => {
             // No arguments were provided, use the author
-            name = format!("{}#{}", msg.author.name, msg.author.discriminator);
+            name = msg.author.tag();
 
             match msg.author.avatar_url() {
                 Some(url) => profile_picture = url,
