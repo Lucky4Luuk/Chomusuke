@@ -26,10 +26,13 @@ use serenity::{
 pub mod commands;
 use commands::{
     general::GENERAL_GROUP,
+    memes::MEMES_GROUP,
     meta::help::MY_HELP,
 };
 
 pub mod utils;
+
+use regex::Regex;
 
 struct Handler;
 
@@ -47,6 +50,12 @@ fn main() {
     let mut builder = pretty_env_logger::formatted_builder();
     builder.filter(Some("Chomusuke"), LevelFilter::max());
     builder.init();
+
+    let str = "1234567890";
+    let regex = Regex::new(r"\d+").unwrap();
+    for mat in regex.find_iter(str) {
+        println!("{:?}", mat);
+    }
 
     info!("Attempting login...");
 
@@ -80,6 +89,7 @@ fn main() {
         })
         .help(&MY_HELP)
         .group(&GENERAL_GROUP)
+        .group(&MEMES_GROUP)
     );
 
     //Start bot autosharded. I really hope this holds up in the future, but it's kinda hard

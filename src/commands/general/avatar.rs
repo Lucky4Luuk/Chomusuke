@@ -35,14 +35,14 @@ pub fn avatar(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult
         Ok(target) => {
             // An argument was provided, search for that user
             let mut guild_channel = ctx.cache.read().guild_channel(msg.channel_id);
-            if(guild_channel.is_none()) {
+            if guild_channel.is_none() {
                 discord_utils::check_message(msg.channel_id.say(ctx, "Sorry, this command only works in servers!"));
                 return Ok(());
             }
 
             let mut target = discord_utils::find_member(&target, &guild_channel.unwrap().read().guild_id, &ctx.cache);
 
-            if(target.is_none()) {
+            if target.is_none() {
                 discord_utils::check_message(msg.channel_id.say(ctx,
                     "Sorry, I couldn't find that user!\nPlease make sure you are provding the User ID or a mention!"
                 ));
