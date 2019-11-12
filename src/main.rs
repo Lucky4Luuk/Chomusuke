@@ -63,7 +63,7 @@ fn main() {
     builder.init();
 
     //TODO: Store all this data in a single JSON file
-    let mut db_address = trim_trailing(include_str!("sensitive_data/db_address.txt").to_string());
+    let db_address = trim_trailing(include_str!("sensitive_data/db_address.txt").to_string());
     let db_passwd = trim_trailing(include_str!("sensitive_data/db_passwd.txt").to_string());
 
     info!("Connection to database `{}:5432/Chomusuke`!", db_address);
