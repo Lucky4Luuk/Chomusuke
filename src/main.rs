@@ -17,6 +17,7 @@ use serenity::{
     framework::standard::{
         StandardFramework,
         Configuration,
+        DispatchError,
         macros::group,
     },
 };
@@ -64,9 +65,24 @@ fn main() {
                         //.allow_whitespace(true)
                         //.on_mention(true)
                         .case_insensitivity(true))
+        //Yikes
+        .on_dispatch_error(|ctx, msg, error| {
+            if let DispatchError::Ratelimited(seconds) = error {
+                msg.channel_id.say(&ctx, &format!("Try again in {} seconds!", seconds));
+            }
+            if let DispatchError::LackingPermissions(permissions) = error {
+                msg.channel_id.say(&ctx, &format!("You lack the following permissions: {:?}", permissions));
+            }
+            if let DispatchError::IgnoredBot = error {
+                msg.channel_id.say(&ctx, "Sorry, commands cannot be triggered by bot users!");
+            }
+        })
         .help(&MY_HELP)
-        .group(&GENERAL_GROUP));
+        .group(&GENERAL_GROUP)
+    );
 
+    //Start bot autosharded. I really hope this holds up in the future, but it's kinda hard
+    //to test sharding without having access to more than 2500 guilds lmao
     if let Err(why) = client.start_autosharded() {
         error!("Client error: {:?}", why);
     }
