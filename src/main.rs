@@ -31,8 +31,9 @@ use postgres::{
 
 pub mod commands;
 use commands::{
-    general::GENERAL_GROUP,
     meta::help::MY_HELP,
+    general::GENERAL_GROUP,
+    memes::MEMES_GROUP,
 };
 
 pub mod utils;
@@ -114,6 +115,7 @@ fn main() {
         })
         .help(&MY_HELP)
         .group(&GENERAL_GROUP)
+        .group(&MEMES_GROUP)
     );
 
     //Start bot autosharded. I really hope this holds up in the future, but it's kinda hard

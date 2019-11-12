@@ -7,8 +7,11 @@ use serenity::framework::standard::{
 pub mod uwuize;
 use uwuize::*;
 
+pub mod nekos;
+use nekos::*;
+
 group!({
     name: "memes",
     options: {},
-    commands: [uwuize],
+    commands: [uwuize, slap],
 });
