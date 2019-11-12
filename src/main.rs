@@ -72,11 +72,7 @@ fn main() {
         .user("postgres", Some(&db_passwd))
         .database("Chomusuke")
         .build(postgres::params::Host::Tcp(db_address));
-    // let conn_res = postgres::Connection::connect(db_params, postgres::TlsMode::None);
-    // if let Err(why) = conn_res {
-    //     error!("AAAAAAAH: {}", why);
-    //     panic!("it broke");
-    // }
+
     let conn = match Connection::connect(db_params, TlsMode::None) {
         Ok(conn) => conn,
         Err(why) => {
