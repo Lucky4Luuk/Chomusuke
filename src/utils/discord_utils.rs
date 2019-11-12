@@ -29,7 +29,9 @@ use serenity::framework::standard::{
 use serenity::Result as SerenityResult;
 
 
-pub static DEFAULT_COLOUR : Colour = Colour::from_rgb(132, 75, 90);
+pub static DEFAULT_COLOUR: Colour     = Colour::from_rgb(132,  75,  90);
+pub static NEKOS_COLOUR: Colour       = Colour::from_rgb( 50, 205,  50);
+pub static PRETTY_PINK_COLOUR: Colour = Colour::from_rgb(232,  28, 147);
 
 pub fn find_member<C>(target: &String, guild_id: &GuildId, cache: &C) -> Option<Member>
     where C: AsRef<CacheRwLock> {

@@ -23,11 +23,17 @@ use serenity::{
     },
 };
 
+use postgres::{
+    Connection,
+    TlsMode,
+    params::ConnectParams,
+};
+
 pub mod commands;
 use commands::{
+    meta::help::MY_HELP,
     general::GENERAL_GROUP,
     memes::MEMES_GROUP,
-    meta::help::MY_HELP,
 };
 
 pub mod utils;
@@ -46,17 +52,39 @@ impl EventHandler for Handler {
     }
 }
 
+//TODO: Move this to utilities
+fn trim_trailing(s: String) -> String {
+    let mut result = s;
+    let len_withoutcrlf = result.trim_right().len();
+    result.truncate(len_withoutcrlf);
+    result
+}
+
 fn main() {
     let mut builder = pretty_env_logger::formatted_builder();
     builder.filter(Some("Chomusuke"), LevelFilter::max());
     builder.init();
 
-    let str = "1234567890";
-    let regex = Regex::new(r"\d+").unwrap();
-    for mat in regex.find_iter(str) {
-        println!("{:?}", mat);
-    }
+    //TODO: Store all this data in a single JSON file
+    let db_address = trim_trailing(include_str!("sensitive_data/db_address.txt").to_string());
+    let db_passwd = trim_trailing(include_str!("sensitive_data/db_passwd.txt").to_string());
 
+    info!("Connection to database `{}:5432/Chomusuke`!", db_address);
+
+    let db_params = ConnectParams::builder()
+        .user("postgres", Some(&db_passwd))
+        .database("Chomusuke")
+        .build(postgres::params::Host::Tcp(db_address));
+
+    let conn = match Connection::connect(db_params, TlsMode::None) {
+        Ok(conn) => conn,
+        Err(why) => {
+            error!("Connection to database failed! Reason: `{}`", why);
+            panic!("Failed to connect to database!");
+        }
+    };
+
+    info!("Succesfully connected to database! Welcome!");
     info!("Attempting login...");
 
     let token = include_str!("sensitive_data/token.txt");
