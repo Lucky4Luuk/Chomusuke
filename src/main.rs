@@ -4,6 +4,7 @@ use std::{env, thread, time::Duration, sync::Arc, collections::HashSet};
 
 use serenity::{
     model::{
+        user::CurrentUser,
         gateway::Ready,
         event::{
             ResumedEvent,
@@ -34,11 +35,13 @@ use commands::{
     meta::help::MY_HELP,
 };
 
+pub mod utils;
+
 struct Handler;
 
 impl EventHandler for Handler {
     fn ready(&self, _: Context, ready: Ready) {
-        info!("Succesfully connected as {}!", ready.user.name);
+        info!("Succesfully connected as {}!", ready.user.tag());
     }
 
     fn resume(&self, _: Context, _: ResumedEvent) {
