@@ -27,6 +27,8 @@ use commands::{
     meta::help::MY_HELP,
 };
 
+pub mod utils;
+
 struct Handler;
 
 impl EventHandler for Handler {
