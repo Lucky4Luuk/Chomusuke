@@ -50,6 +50,10 @@ impl TypeMapKey for ConnectionKey {
     type Value = Arc<Mutex<Connection>>;
 }
 
+use regex::Regex;
+
+struct Handler;
+
 struct Handler;
 impl EventHandler for Handler {
     //Bot is fully connected
