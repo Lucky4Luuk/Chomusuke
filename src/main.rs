@@ -9,6 +9,11 @@ use serenity::{
         event::{
             ResumedEvent,
         },
+        id::GuildId,
+        guild::{
+            Member,
+        },
+        channel::*,
     },
     prelude::*,
     client::{
@@ -22,11 +27,13 @@ use serenity::{
         macros::group,
     },
 };
+use serenity::model::event::GuildMemberAddEvent;
 
 use postgres::{
     Connection,
     TlsMode,
     params::ConnectParams,
+    types::*,
 };
 
 pub mod commands;
@@ -38,22 +45,54 @@ use commands::{
 
 pub mod utils;
 
-struct Handler;
+struct ConnectionKey;
+impl TypeMapKey for ConnectionKey {
+    type Value = Arc<Mutex<Connection>>;
+}
 
+struct Handler;
 impl EventHandler for Handler {
+    //Bot is fully connected
     fn ready(&self, _: Context, ready: Ready) {
         info!("Succesfully connected as {}!", ready.user.tag());
     }
 
+    //Event for reconnecting
     fn resume(&self, _: Context, _: ResumedEvent) {
-        info!("Resumed!");
+        info!("Reconnected!");
+    }
+
+    //Member joined
+    fn guild_member_addition(&self, ctx: Context, guild_id: GuildId, new_member: Member) {
+        debug!("Member joined!");
+
+        //We don't add users to the DB here, as that would needlessly clog up the DB with users who don't talk
+    }
+
+    fn message(&self, ctx: Context, message: Message) {
+        //THIS DOESNT BLOCK COMMANDS FROM WORKING
+        //THANKS SERENITY DEVS
+        // debug!("MESSAGE! {}", message.content);
+        let data = ctx.data.read();
+        let conn = data.get::<ConnectionKey>().expect("Failed to read DB connection").lock();
+        let query_rows = &conn.query(&format!("SELECT COUNT(1) FROM Users WHERE UserID = {};", message.author.id), &[]).expect("DB query failed");
+        let member_data_count: i64 = query_rows.get(0).get("count");
+        // debug!("Hmm? {:?}", member_data_count);
+        if member_data_count == 0 {
+            //Member doesn't exist yet, so add it to the DB
+            if let Err(why) = conn.execute(&format!("INSERT INTO Users (UserID) VALUES ({UserID})", UserID = message.author.id), &[]) {
+                error!("{}", why);
+            } else {
+                debug!("Added new user to the database!");
+            }
+        }
     }
 }
 
 //TODO: Move this to utilities
 fn trim_trailing(s: String) -> String {
     let mut result = s;
-    let len_withoutcrlf = result.trim_right().len();
+    let len_withoutcrlf = result.trim_end().len();
     result.truncate(len_withoutcrlf);
     result
 }
@@ -93,6 +132,13 @@ fn main() {
         Ok(info) => info,
         Err(why) => panic!("Error creating client!"),
     };
+
+    // Insert data into the client. Retrieve with <context>.data.read().get::<ConnectionKey>().expect("Failed to read DB connection");
+    {
+        let mut data = client.data.write();
+
+        data.insert::<ConnectionKey>(Arc::new(Mutex::new(conn)));
+    }
 
     client.with_framework(StandardFramework::new()
         .configure(|c| c.prefix("cs!")
