@@ -54,7 +54,6 @@ use regex::Regex;
 
 struct Handler;
 
-struct Handler;
 impl EventHandler for Handler {
     //Bot is fully connected
     fn ready(&self, _: Context, ready: Ready) {
