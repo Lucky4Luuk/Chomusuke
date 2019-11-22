@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use log::{debug, error, info, trace, warn, Level, LevelFilter};
 
 use std::{env, thread, time::Duration, sync::Arc, collections::HashSet};
@@ -35,6 +36,9 @@ use postgres::{
     params::ConnectParams,
     types::*,
 };
+
+pub mod sql_wrapper;
+use sql_wrapper::*;
 
 pub mod commands;
 use commands::{
@@ -76,14 +80,14 @@ impl EventHandler for Handler {
         //THIS DOESNT BLOCK COMMANDS FROM WORKING
         //THANKS SERENITY DEVS
         // debug!("MESSAGE! {}", message.content);
+
         let data = ctx.data.read();
         let conn = data.get::<ConnectionKey>().expect("Failed to read DB connection").lock();
-        let query_rows = &conn.query(&format!("SELECT COUNT(1) FROM Users WHERE UserID = {};", message.author.id), &[]).expect("DB query failed");
-        let member_data_count: i64 = query_rows.get(0).get("count");
+
         // debug!("Hmm? {:?}", member_data_count);
-        if member_data_count == 0 {
+        if does_member_exist(conn.deref(), message.author.id) == false {
             //Member doesn't exist yet, so add it to the DB
-            if let Err(why) = conn.execute(&format!("INSERT INTO Users (UserID) VALUES ({UserID})", UserID = message.author.id), &[]) {
+            if let Err(why) = create_new_member(conn.deref(), message.author.id) {
                 error!("{}", why);
             } else {
                 debug!("Added new user to the database!");

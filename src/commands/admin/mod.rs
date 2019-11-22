@@ -1,13 +1,22 @@
-//I stole this code from an example
+use serenity::framework::standard::{
+    macros::{
+        group,
+    },
+};
 
-// group!({
-//     name: "owner",
-//     options: {
-//         owners_only: true,
-//         // Limit all commands to be guild-restricted.
-//         only_in: "guilds",
-//         // Adds checks that need to be passed.
-//         checks: [Admin],
-//     },
-//     commands: [am_i_admin, slow_mode],
-// });
+pub mod checks;
+use checks::*;
+
+pub mod config;
+use config::*;
+
+group!({
+    name: "admin",
+    options: {
+        // Limit all commands to be guild-restricted.
+        only_in: "guilds",
+        // Adds checks that need to be passed.
+        checks: [Admin],
+    },
+    commands: [set_welcome_channel],
+});
